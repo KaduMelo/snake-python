@@ -1,9 +1,12 @@
 import pygame
 import random
 
+pygame.init()
+
 azul = (50,100, 213)
 laranja = (205, 102, 0)
 verde = (0, 255, 64)
+amarelo = (255, 255, 0)
 
 dimensoes = (600, 600)
 
@@ -20,6 +23,8 @@ dy = 0
 
 x_comida = round(random.randrange(0, 600 - d) / 20) * 20
 y_comida = round(random.randrange(0, 600 - d) / 20) * 20
+
+fonte = pygame.font.SysFont("hack", 35)
 
 tela = pygame.display.set_mode(dimensoes)
 pygame.display.set_caption('Snake')
@@ -91,6 +96,10 @@ def verifica_mordeu_cobra(lista_cobra):
         if x == head[0] and y == head[1]:
             raise Exception
 
+def atualizar_pontos(lista_cobra):
+    pts = str(len(lista_cobra) - 1)
+    escore = fonte.render("Pontuação: " + pts, True, amarelo)
+    tela.blit(escore, [0, 0])
 
 while True:
     pygame.display.update()
@@ -100,5 +109,6 @@ while True:
     print(lista_cobra)
     verifica_parede(lista_cobra)
     verifica_mordeu_cobra(lista_cobra)
+    atualizar_pontos(lista_cobra)
     
     clock.tick(10)
