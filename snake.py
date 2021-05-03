@@ -67,10 +67,30 @@ def verifica_comida(dx, dy, x_comida, y_comida, lista_cobra):
 
     if head[0] == x_comida and head[1] == y_comida:
         lista_cobra.append([x_novo, y_novo])
+        x_comida = round(random.randrange(0, 600 - d) / 20) * 20
+        y_comida = round(random.randrange(0, 600 - d) / 20) * 20
 
     pygame.draw.rect(tela, verde, [x_comida, y_comida , d, d])
 
     return x_comida, y_comida, lista_cobra
+
+def verifica_parede(lista_cobra):
+    head = lista_cobra[-1]
+    x = head[0]
+    y = head[1]
+
+    if x not in range(600) or y not in range(600):
+        raise Exception
+
+def verifica_mordeu_cobra(lista_cobra):
+    head = lista_cobra[-1]
+    corpo = lista_cobra.copy()
+
+    del corpo[-1]
+    for x, y in corpo:
+        if x == head[0] and y == head[1]:
+            raise Exception
+
 
 while True:
     pygame.display.update()
@@ -78,5 +98,7 @@ while True:
     dx, dy, lista_cobra = mover_cobra(dx, dy, lista_cobra)
     x_comida, y_comida, lista_cobra = verifica_comida(dx, dy, x_comida, y_comida, lista_cobra)
     print(lista_cobra)
+    verifica_parede(lista_cobra)
+    verifica_mordeu_cobra(lista_cobra)
     
-    clock.tick(5)
+    clock.tick(10)
